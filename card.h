@@ -10,7 +10,9 @@ using namespace cv;
 class card {
 public:
 	card(string col, string t, string f);
-//private:
+	Mat getImage();
+	string name();
+private:
 	string color;
 	string type;
 	Mat img;

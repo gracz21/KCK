@@ -1,0 +1,9 @@
+﻿  Źródło.cpp
+Źródło.cpp(75): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+Źródło.cpp(93): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+Źródło.cpp(94): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+Źródło.cpp(95): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+Źródło.cpp(96): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+  Generating code
+  Finished generating code
+  Projekt_4.vcxproj -> C:\Users\Kamil W\Desktop\Studia\Semestr V\Komunikacja człowiek-komputer\Laboratoria\Projekt_4\Release\Projekt_4.exe

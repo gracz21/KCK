@@ -1,0 +1,10 @@
+﻿  main.cpp
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(67): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(80): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(94): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(95): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(96): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(97): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+  card.cpp
+  Generowanie kodu...
+  Projekt_4.vcxproj -> C:\Users\Kamil W\Desktop\Studia\Semestr V\Komunikacja człowiek-komputer\Laboratoria\Projekt_4\Debug\Projekt_4.exe

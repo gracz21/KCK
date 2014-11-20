@@ -1,29 +1,41 @@
 from skimage import data, filter, morphology
 from skimage.feature import (match_descriptors, corner_harris,
                              corner_peaks, ORB, plot_matches)
+import os
+from multiprocessing import Pool
+
 
 def load_pattenrs(patterns, descriptor_extractor):
-    i = 1
-    while i < 11:
-        tmp = data.imread('pattern (' + str(i) + ').jpg', as_grey=True)
+    listing = os.listdir('patterns')
+    for filename in listing:
+        print 'Working on: ' + filename
+        tmp = data.imread('patterns/' + filename, as_grey=True)
         tmp **= 2.0
         tmp = filter.canny(tmp, sigma=3.0)
         tmp = morphology.dilation(tmp, morphology.disk(2))
         descriptor_extractor.detect_and_extract(tmp)
         obj_desc = descriptor_extractor.descriptors
         patterns.append(obj_desc)
-        i += 1
+
 
 def load_scenes(scenes, descriptor_extractor):
-    i = 1
-    while i < 10:
-        tmp = data.imread('scene (' + str(i) + ').jpg', as_grey=True)
+    listing = os.listdir('scenes')
+    for filename in listing:
+        print 'Working on: ' + filename
+        tmp = data.imread('scenes/' + filename, as_grey=True)
         tmp **= 2.0
         tmp = filter.canny(tmp, sigma=3.0)
         tmp = morphology.dilation(tmp, morphology.disk(2))
         descriptor_extractor.detect_and_extract(tmp)
         scen_desc = descriptor_extractor.descriptors
         scenes.append(scen_desc)
+
+
+def set_names(types, colors, card, size):
+    i = -1
+    while i < size:
+        if i > -1:
+            card.append(types[i % 13] + ' ' + colors[int(i / 13)])
         i += 1
 
 
@@ -32,7 +44,7 @@ def recognize(patterns, scenes, cards):
         best_match = 0
         id = 0
         i = 0
-        while i < 10:
+        while i < len(patterns):
             matches = match_descriptors(j, patterns[i], cross_check=True)
             if matches.size > best_match:
                 id = i
@@ -42,14 +54,21 @@ def recognize(patterns, scenes, cards):
 
 
 def main():
-    cards = ['dama karo', 'szostka kier', 'trojka karo', 'siodemka pik', 'piatka kier',
-             'krol trefl', 'czarny joker', 'czerwony joker', 'dwojka trefl', 'as pik']
+    types = ['as', 'dwojka', 'trojka', 'czworka',
+             'piatka', 'szostka', 'siodemka', 'osemka',
+             'dziewiatka', 'dziesiatka', 'walet', 'dama', 'krol']
+    colors = ['pik', 'kier', 'trefl', 'karo']
+    cards = ['joker']
     patterns = []
     scenes = []
     descriptor_extractor = ORB()
+    #p = Pool(5)
 
+    #p.map(load_pattenrs, patterns, descriptor_extractor)
+    #p.map(load_scenes, scenes, descriptor_extractor)
     load_pattenrs(patterns, descriptor_extractor)
     load_scenes(scenes, descriptor_extractor)
+    set_names(types, colors, cards, len(patterns) - 1)
 
     recognize(patterns, scenes, cards)
 

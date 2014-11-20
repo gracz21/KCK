@@ -1,10 +1,14 @@
-﻿  main.cpp
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(67): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(80): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(94): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(95): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(96): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
-c:\users\kamil w\desktop\studia\semestr v\komunikacja człowiek-komputer\laboratoria\projekt_4\projekt_4\main.cpp(97): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
-  card.cpp
-  Generowanie kodu...
-  Projekt_4.vcxproj -> C:\Users\Kamil W\Desktop\Studia\Semestr V\Komunikacja człowiek-komputer\Laboratoria\Projekt_4\Debug\Projekt_4.exe
+﻿Build started 2014-11-19 18:05:18.
+     1>Project "C:\Users\krysz_000\Documents\GitHub\KCK\Projekt_4\Projekt_4.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I\..\..\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt card.cpp main.cpp
+         main.cpp
+     1>c:\users\krysz_000\documents\github\kck\projekt_4\main.cpp(3): fatal error C1083: Cannot open include file: 'opencv2/features2d/features2d.hpp': No such file or directory
+         card.cpp
+     1>c:\users\krysz_000\documents\github\kck\projekt_4\card.h(5): fatal error C1083: Cannot open include file: 'opencv2/core/core.hpp': No such file or directory
+         Generating Code...
+     1>Done Building Project "C:\Users\krysz_000\Documents\GitHub\KCK\Projekt_4\Projekt_4.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.78

@@ -27,7 +27,7 @@ def load_scenes(filename):
     zipped_scenes = []
     print 'Working on: ' + filename
     tmp = data.imread('scenes/' + filename, as_grey=True)
-    tmp **= 2.0
+    tmp **= 3.0
     tmp = filter.canny(tmp, sigma=3.0)
     tmp = morphology.dilation(tmp, morphology.disk(2))
     descriptor_extractor.detect_and_extract(tmp)

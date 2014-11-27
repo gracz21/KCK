@@ -1,8 +1,9 @@
 from skimage import data, filter, morphology
-from skimage.feature import (match_descriptors, ORB)
+from skimage.feature import (match_descriptors, ORB, plot_matches)
 import os
 from multiprocessing import Pool
 import logging
+import matplotlib.pyplot as plt
 
 types = ['as', 'dwojka', 'trojka', 'czworka',
              'piatka', 'szostka', 'siodemka', 'osemka',
@@ -14,25 +15,29 @@ descriptor_extractor = ORB()
 def load_pattenrs(filename):
     z_patterns = []
     print 'Working on: ' + filename
-    tmp = data.imread('patterns/' + filename, as_grey=True)
+    img = data.imread('patterns/' + filename, as_grey=True)
+    tmp = img
     tmp = filter.canny(tmp, sigma=3.0)
     tmp = morphology.dilation(tmp, morphology.disk(2))
     descriptor_extractor.detect_and_extract(tmp)
+    obj_key = descriptor_extractor.keypoints
     obj_desc = descriptor_extractor.descriptors
-    z_patterns.append([obj_desc, filename])
+    z_patterns.append([img, obj_desc, obj_key, filename])
     return z_patterns
 
 
 def load_scenes(filename):
     zipped_scenes = []
     print 'Working on: ' + filename
-    tmp = data.imread('scenes/' + filename, as_grey=True)
-    tmp **= 3.0
+    img = data.imread('scenes/' + filename, as_grey=True)
+    tmp = img
+    tmp **= 2.0
     tmp = filter.canny(tmp, sigma=3.0)
     tmp = morphology.dilation(tmp, morphology.disk(2))
     descriptor_extractor.detect_and_extract(tmp)
+    obj_key = descriptor_extractor.keypoints
     scen_desc = descriptor_extractor.descriptors
-    zipped_scenes.append([scen_desc, filename])
+    zipped_scenes.append([img, scen_desc, obj_key, filename])
     return zipped_scenes
 
 
@@ -47,7 +52,7 @@ def set_names(size):
 def recognize(pattern, name, scene):
     zipped_matches = []
     match = match_descriptors(scene, pattern, cross_check=True)
-    zipped_matches.append([match.size, name])
+    zipped_matches.append([match.size, name, match])
     return zipped_matches
 
 def f_wrap(arg_list):
@@ -65,18 +70,19 @@ def main():
     zipped_scenes = p.map(load_scenes, listing)
     zipped_scenes = [ent for sublist in zipped_scenes for ent in sublist]
     #zipped_patterns.sort(key=lambda x: x[1])
-    patterns, tmp = zip(*zipped_patterns)
-    zipped_scenes.sort(key=lambda x: x[1])
-    scenes, tmp = zip(*zipped_scenes)
+    p_img, patterns, p_key, tmp = zip(*zipped_patterns)
+    zipped_scenes.sort(key=lambda x: x[3])
+    s_img, scenes, s_key, tmp = zip(*zipped_scenes)
     set_names(len(zipped_patterns) - 1)
+    k = 0
     for j in scenes:
         arg_list = []
-        for a, b in zipped_patterns:
-            arg_list.append([a, b, j])
+        for a, b, c, d in zipped_patterns:
+            arg_list.append([b, d, j])
         zipped_matches = p.map(f_wrap, arg_list)
         zipped_matches = [ent for sublist in zipped_matches for ent in sublist]
         zipped_matches.sort(key=lambda x: x[1])
-        matches, tmp = zip(*zipped_matches)
+        matches, tmp, m_array = zip(*zipped_matches)
         best_match = max(matches)
         proc = 1.0
         id = 0
@@ -85,7 +91,13 @@ def main():
             if matches[i] == best_match and el < proc:
                 proc = el
                 id = i
+        fig, ax = plt.subplots()
+        plt.gray()
+        plot_matches(ax, p_img[id], s_img[k], p_key[id], s_key[k], m_array[id])
+        ax.axis('off')
+        plt.show()
         print 'Karta to: ', cards[id]
+        k += 1
 
 if __name__ == '__main__':
     main()

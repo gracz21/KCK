@@ -7,35 +7,22 @@ import scipy.io.wavfile
 import math
 import os
 import wave
-import struct
-
-def everyOther (v, offset=0):
-   return [v[i] for i in range(offset, len(v), 2)]
-
-def readwav(fname):
-    wav = wave.open(fname, "r")
-    nchannels, sampwidth, framerate, nframes, comptype, compname = wav.getparams()
-    frames = wav.readframes(nframes * nchannels)
-    out = struct.unpack_from("%dh" % nframes * nchannels, frames)
-
-    if nchannels == 2:
-        left = array(list(everyOther(out, 0)))
-        left /= 2
-        right = array(list(everyOther(out, 1)))
-        right /= 2
-        signal = left + right
-    else:
-        signal = array(out)
-
-    w = framerate*nchannels
-
-    return w, signal
 
 #opts, file = getopt.getopt(argv, [])
 listing = os.listdir('samples')
 #file = '006_K.wav'
 for file in listing:
-    w, signal = readwav(file)
+    w, data = scipy.io.wavfile.read(file)
+
+    signal = np.zeros(data.shape[0])
+    if len(data.shape) == 2:
+        for i in range(data.shape[0]):
+            tmp1 = data[i][0]/2
+            tmp2 = data[i][1]/2
+            tmp = tmp1 + tmp2
+            signal[i] = tmp
+    else:
+        signal = data
 
     T = 1
     n = len(signal)

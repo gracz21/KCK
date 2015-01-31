@@ -24,65 +24,51 @@ def opensignal(fname):
     return w, signal
 
 
-def clearsignal(fft_signal, n, w):
-    r1 = int(math.floor(60*n/w))
-    for i in range(1, r1):
-        fft_signal[i] = 0
-
-    r2 = int(math.ceil(300*n/w))
-    for i in range(r2, len(fft_signal)):
-        fft_signal[i] = 0
-
+def clearsignal(fft_signal):
     m = max(fft_signal[1:])
 
-    for i in range(r1 - 1, r2):
+    for i in range(1, len(fft_signal)):
         if fft_signal[i] < m/2:
             fft_signal[i] = 0
 
 
-def countfreq(fft_signal, n, w):
-    r1 = int(math.floor(85*n/w))
-    r2 = int(math.ceil(180*n/w))
-
-    man = 0
-    for i in range(r1, r2):
-        man += fft_signal[i]
-
-    r1 = int(math.floor(165*n/w))
-    r2 = int(math.ceil(255*n/w))
-
-    woman = 0
-    for i in range(r1, r2):
-        woman += fft_signal[i]
-
-    return man, woman
-
-
 def cepstrum(signal, n, w):
-    signal1 = rfft(signal)
-    signal1 = abs(signal1)
+    window_time = 250
+    window_width = int(window_time*w/1000)
+    num_of_wind = int(n/window_width)
 
-    clearsignal(signal1, n, w)
+    f = []
 
-    man, woman = countfreq(signal1, n, w)
+    for i in range(num_of_wind):
+        poz = i*window_width
+        signal_tmp = signal[poz:poz+window_width]
+        signal_tmp *= blackman(len(signal_tmp))
+        signal1 = rfft(signal_tmp)
+        signal1 = abs(signal1)
 
-    for i in range(0, len(signal1)):
-        if signal1[i] > 0:
-            signal1[i] = log(signal1[i])
+        clearsignal(signal1)
 
-    signal2 = irfft(signal1)
-    signal2 = abs(signal2)
+        for i in range(0, len(signal1)):
+            if signal1[i] > 0:
+                signal1[i] = log(signal1[i])
 
-    poz = 0
-    r1 = int(w/80)
-    r2 = int(w/255)
-    m = max(signal2[r2:r1])
-    for i in range(r2, r1):
-        if m == signal2[i]:
-            poz = i
+        signal2 = irfft(signal1)
+        signal2 = abs(signal2)
 
-    f = w/poz
-    return f, man, woman
+        poz = 1
+        r1 = int(math.floor(w/80))
+        r2 = int(math.floor(w/255))
+        m = max(signal2[r2:r1])
+        for i in range(r2, r1):
+            if m == signal2[i]:
+                poz = i
+                break
+
+        f.append(w/poz)
+
+    result = np.median(sorted(f))
+
+    return result
 
 
 def main(argv):
@@ -91,18 +77,12 @@ def main(argv):
     w, signal = opensignal(file[0])
     n = len(signal)
 
-    f, man, woman = cepstrum(signal, n, w)
+    f = cepstrum(signal, n, w)
 
     if f <= 165:
         print('M')
     else:
-        if f >= 180:
-            print('K')
-        else:
-            if man >= woman:
-                print ('M')
-            else:
-                print ('K')
+        print('K')
 
 if __name__ == "__main__":
    main(sys.argv[1:])
